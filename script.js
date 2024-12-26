@@ -93,6 +93,34 @@ class CTable
 
 class Blueprint
 {
+  static heatSource =
+  {
+    'heating-tower':
+    {
+      'normal':    40,
+      'uncommon':  52,
+      'rare':      64,
+      'epic':      76,
+      'legendary': 100,
+    },
+    'nuclear-reactor':
+    {
+      'normal':    40,
+      'uncommon':  52,
+      'rare':      64,
+      'epic':      76,
+      'legendary': 100,
+    },
+  }
+  static nuclearPower =
+  {
+    'normal':    40,
+    'uncommon':  52,
+    'rare':      64,
+    'epic':      76,
+    'legendary': 100,
+  };
+
   static heatTowerPower =
   {
     'normal':    40,
@@ -216,7 +244,13 @@ class Blueprint
   }
 
   makeIcon(name) { return `<span class='icon ${name}'></span>`; }
-  makeWikiLink(name) { return `<a href='https://wiki.factorio.com/${this.nameAsWiki(name)}' target='_blank'>${name}</a>`; }
+  makeQalityIcon(name) { return `<img class='icon' src='https://wiki.factorio.com/images/thumb/Quality_${name}.png/32px-Quality_${name}.png' />`; }
+  //
+  makeWikiLink(name, caption = '')
+  {
+    return `<a href='https://wiki.factorio.com/${this.nameAsWiki(name)}' target='_blank'>${caption == '' ? name : caption}</a>`;
+  }
+
   countEntities()
   {
     for (const entity of this.data.blueprint.entities)
@@ -262,17 +296,18 @@ class Blueprint
     table.appendFooter(`Total: ${this.formatNumber(totalHeat, 'W', 2)}`);
     table.apply(this.element_heat);
 
-    this.calcAquiloHeatTowers(totalHeat);
+    this.calcAquiloHeatTowers(totalHeat, 'nuclear-reactor');
+    this.calcAquiloHeatTowers(totalHeat, 'heating-tower');
   }
 
-  calcAquiloHeatTowers(heatNeed)
+  calcAquiloHeatTowers(heatNeed, heatSource)
   {
-    const table = new CTable(['Quality', 'Count'], 'Heating towers');
-    for (const [quality, power] of Object.entries(Blueprint.heatTowerPower))
+    const table = new CTable(['Quality', 'Count'], this.makeIcon(heatSource) + '&nbsp;' + this.makeWikiLink(heatSource));
+    for (const [quality, power] of Object.entries(Blueprint.heatSource[heatSource]))
     {
       let towers = heatNeed / (power * 1000000);
       table.appendRow([
-        quality,
+        this.makeQalityIcon(quality),
         this.round(towers, 2)
       ]);
       table.apply(this.element_heat);

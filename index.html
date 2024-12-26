@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blueprint information tool</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <link rel="stylesheet" type="text/css" href="entities.css">
+</head>
+<body>
+  <h1>Декодер Blueprint</h1>
+  <textarea id="blueprint_string" rows="2" placeholder="Paste blueprint string here"></textarea><br>
+  <button id="decodeButton">Декодировать</button>&nbsp;
+  <button id="pasteButton">Вставить</button>&nbsp;
+  <button id="clearButton">Очистить</button>
+  <table class="main">
+    <tr>
+      <td><div id="counts"></div></td>
+      <td><div id="heat"></div></td>
+    </tr>
+  </table>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
